@@ -1,0 +1,46 @@
+https://openlayers.org/en/latest/doc/tutorials/bundle.html
+
+
+----------------------------------------------------------------------------
+
+adjust the following in package.json to reflect name of .js and .html files
+
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "parcel fullscreen.html",
+  "build": "parcel build --public-url . fullscreen.html"
+},
+
+----------------------------------------------------------------------------
+
+-----------------------------------------
+
+edit the html file to match the .js name
+
+<script src="./fullscreen.js"></script>
+
+------------------------------------------
+
+*****************
+*** npm start ***
+*****************
+
+*fullscreen_css*
+https://subscription.packtpub.com/book/application_development/9781849517843/1/ch01lvl1sec09/creating-a-simple-full-screen-map
+uses CSS to create full screen view
+
+*measure*
+
+*coordinates*
+
+*scale*
+
+*line draw coord capture*
+
+*ping animation*
+
+*layers geojson*
+
+*layers db*
+
+*layers Geoserver*

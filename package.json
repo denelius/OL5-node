@@ -1,0 +1,19 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "fullscreen.js",
+  "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "parcel fullscreen.html",
+  "build": "parcel build --public-url . fullscreen.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ol": "^5.3.1"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  }
+}
