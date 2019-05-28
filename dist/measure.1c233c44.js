@@ -57834,6 +57834,14 @@ var continuePolygonMsg = 'Click to continue drawing the polygon';
 
 var continueLineMsg = 'Click to continue drawing the line';
 /**
+ * Store which tool is acitve.
+ * @type {int} 
+ * 1 = measure 
+ * 2 = identify
+ */
+
+var aTool = 0;
+/**
  * Handle pointer move.
  * @param {module:ol/MapBrowserEvent~MapBrowserEvent} evt The event.
  */
@@ -57877,6 +57885,11 @@ map.getViewport().addEventListener('mouseout', function () {
 var typeSelect = document.getElementById('type');
 var draw; // global so we can remove it later
 
+map.on('singleclick', function (evt) {
+  console.log(evt.coordinate); // convert coordinate to EPSG-4326
+
+  console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+});
 /**
  * Format length output.
  * @param {module:ol/geom/LineString~LineString} line The line.
@@ -57915,26 +57928,37 @@ var formatArea = function formatArea(polygon) {
   return output;
 };
 
+function addIdentify() {
+  $(".tooltip ").hide();
+  vector.getSource().clear();
+  map.removeInteraction(draw);
+  map.on('click', function (evt) {
+    var coordinates = evt.coordinate;
+    alert(coordinates);
+  });
+
+  if (aTool == 1) {}
+}
+
 function addInteraction() {
-  if (typeSelect.value == 'close') {
-    //map.removeInteraction(measuringTool);
-    //$(element).helpTooltipElement('destroy');
-    // map.removeOverlay(helpTooltip);
-    // map.removeLayer(vector);
-    // map.removeInteraction(draw);
-    // vector.getSource().clear(true);
-    // map.removeLayer(vector);
-    // $( ".target" ).hide();
-    // $(".tooltip ").remove();
-    $(".tooltip ").hide();
-    vector.getSource().clear(); // var selectSource = map.getLayer(vector).getSource();
-    // selectSource.removeFeature(vector);
-    // sketch = null;
-    //draw.deactivate();
-
-    return;
-  }
-
+  // if (typeSelect.value == 'close') {
+  //   //map.removeInteraction(measuringTool);
+  //   //$(element).helpTooltipElement('destroy');
+  //   // map.removeOverlay(helpTooltip);
+  //   // map.removeLayer(vector);
+  //   // map.removeInteraction(draw);
+  //   // vector.getSource().clear(true);
+  //   // map.removeLayer(vector);
+  //   // $( ".target" ).hide();
+  //   // $(".tooltip ").remove();
+  //   $(".tooltip ").hide();
+  //   vector.getSource().clear();
+  //   // var selectSource = map.getLayer(vector).getSource();
+  //   // selectSource.removeFeature(vector);
+  //   // sketch = null;
+  //   //draw.deactivate();
+  //   return;
+  // }
   var type = typeSelect.value == 'area' ? 'Polygon' : 'LineString';
   draw = new _Draw.default({
     source: source,
@@ -58044,7 +58068,17 @@ typeSelect.onchange = function () {
   addInteraction();
 };
 
-addInteraction();
+window.measFunction = function () {
+  alert("measure " + aTool);
+  aTool = 1;
+  addInteraction();
+};
+
+window.idenFunction = function () {
+  alert("identify " + aTool);
+  aTool = 2;
+  addIdentify();
+};
 },{"ol/Map":"node_modules/ol/Map.js","ol/Observable":"node_modules/ol/Observable.js","ol/Overlay":"node_modules/ol/Overlay.js","ol/sphere":"node_modules/ol/sphere.js","ol/View":"node_modules/ol/View.js","ol/geom":"node_modules/ol/geom.js","ol/interaction/Draw":"node_modules/ol/interaction/Draw.js","ol/layer":"node_modules/ol/layer.js","ol/source":"node_modules/ol/source.js","ol/style":"node_modules/ol/style.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -58073,7 +58107,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39717" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45395" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

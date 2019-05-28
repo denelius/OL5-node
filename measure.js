@@ -83,6 +83,14 @@ var continuePolygonMsg = 'Click to continue drawing the polygon';
  */
 var continueLineMsg = 'Click to continue drawing the line';
 
+/**
+ * Store which tool is acitve.
+ * @type {int} 
+ * 1 = measure 
+ * 2 = identify
+ */
+var aTool = 0;
+
 
 /**
  * Handle pointer move.
@@ -130,6 +138,15 @@ var typeSelect = document.getElementById('type');
 var draw; // global so we can remove it later
 
 
+map.on('singleclick', function (evt) {
+    console.log(evt.coordinate);
+    // convert coordinate to EPSG-4326
+    console.log(ol.proj.transform(evt.coordinate, 'EPSG:3857', 'EPSG:4326'));
+});
+
+
+
+
 /**
  * Format length output.
  * @param {module:ol/geom/LineString~LineString} line The line.
@@ -167,25 +184,40 @@ var formatArea = function(polygon) {
   return output;
 };
 
-function addInteraction() {
-  if (typeSelect.value == 'close') {
-    //map.removeInteraction(measuringTool);
-    //$(element).helpTooltipElement('destroy');
-    // map.removeOverlay(helpTooltip);
-    // map.removeLayer(vector);
-    // map.removeInteraction(draw);
-    // vector.getSource().clear(true);
-    // map.removeLayer(vector);
-    // $( ".target" ).hide();
-    // $(".tooltip ").remove();
-    $(".tooltip ").hide();
-    vector.getSource().clear()
-    // var selectSource = map.getLayer(vector).getSource();
-    // selectSource.removeFeature(vector);
-    // sketch = null;
-    //draw.deactivate();
-    return;
+function addIdentify() {
+  $(".tooltip ").hide();
+  vector.getSource().clear();
+  map.removeInteraction(draw);
+
+  map.on('click', function(evt) {
+    var coordinates = evt.coordinate;
+    alert(coordinates);
+  });
+  if (aTool == 1) {
+
   }
+
+}
+
+function addInteraction() {
+  // if (typeSelect.value == 'close') {
+  //   //map.removeInteraction(measuringTool);
+  //   //$(element).helpTooltipElement('destroy');
+  //   // map.removeOverlay(helpTooltip);
+  //   // map.removeLayer(vector);
+  //   // map.removeInteraction(draw);
+  //   // vector.getSource().clear(true);
+  //   // map.removeLayer(vector);
+  //   // $( ".target" ).hide();
+  //   // $(".tooltip ").remove();
+  //   $(".tooltip ").hide();
+  //   vector.getSource().clear();
+  //   // var selectSource = map.getLayer(vector).getSource();
+  //   // selectSource.removeFeature(vector);
+  //   // sketch = null;
+  //   //draw.deactivate();
+  //   return;
+  // }
   var type = (typeSelect.value == 'area' ? 'Polygon' : 'LineString');
   draw = new Draw({
     source: source,
@@ -297,4 +329,17 @@ typeSelect.onchange = function() {
   addInteraction();
 };
 
-addInteraction();
+
+
+window.measFunction = function() {
+  alert("measure " + aTool);
+  aTool = 1;
+  addInteraction();
+}
+
+window.idenFunction = function() {
+  alert("identify " + aTool);
+  aTool = 2;
+  addIdentify()
+}
+
